@@ -15,6 +15,7 @@ export default defineConfig({
       '@layouts': path.resolve(__dirname, `./src/layouts`),
       '@theme': path.resolve(__dirname, `./src/theme`),
       '@configs': path.resolve(__dirname, `./src/configs`),
+      '@axios': path.resolve(__dirname, `./src/axios`),
     },
   },
 })

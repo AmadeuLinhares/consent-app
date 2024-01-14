@@ -6,7 +6,7 @@ export const DefaultLayout = () => {
   return (
     <Box
       display={`grid`}
-      gridTemplateColumns={`10% auto`}
+      gridTemplateColumns={`20% auto`}
       columnGap={`10px`}
       height={`100vh`}
     >

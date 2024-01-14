@@ -28,7 +28,8 @@
       "@storage/*": ["./src/storage/*"],
       "@layouts/*": ["./src/layouts/*"],
       "@theme/*": ["./src/theme/*"],
-      "@configs/*": ["./src/configs/*"]
+      "@configs/*": ["./src/configs/*"],
+      "@axios/*": ["./src/axios/*"]
 
       // Add other path aliases as needed
     }

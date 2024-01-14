@@ -10,7 +10,6 @@ import {
   ListItem,
   ListItemButton,
   ListItemIcon,
-  ListItemText,
 } from '@mui/material'
 import tokens from '@theme/tokens'
 import { useNavigate } from 'react-router-dom'

@@ -49,11 +49,11 @@ export default {
     bold: 700,
   },
   RADII: {
-    none: 0,
-    small: 4,
-    medium: 8,
-    large: 16,
-    pill: 160,
-    circle: 999,
+    none: `0px`,
+    small: `4px`,
+    medium: `8px`,
+    large: `16px`,
+    pill: `160px`,
+    circle: `999px`,
   },
 }
