@@ -8,12 +8,7 @@ import { ConsentsAvailableResponse } from '@api/consentsAvailable/types'
 import { Table } from '@components/Table'
 import { PageLayout } from '@layouts/PageLayout'
 import { Box } from '@mui/material'
-import {
-  GridCallbackDetails,
-  GridColDef,
-  GridPaginationModel,
-  GridValueGetterParams,
-} from '@mui/x-data-grid'
+import { GridColDef, GridValueGetterParams } from '@mui/x-data-grid'
 import { EmptyState } from '@pages/ConsentManagement/components/emptyState'
 import { useGlobalLoader } from '@storage/globalLoader'
 import { useQueryClient } from 'react-query'
@@ -35,15 +30,22 @@ const columns: GridColDef[] = [
   },
 ]
 
+const oneMinCacheTime = 1000 * 60 // 1min
+
 export const ConsentManagement = () => {
-  const [page, setPage] = useState(0)
+  const [page, setPage] = useState(1)
   const setGlobalLoad = useGlobalLoader((state) => state.setLoading)
   const useQuery = useQueryClient()
   const [consentList, setConsentList] = useState<AddNewConsentsResponse[]>([])
-  const { data, isLoading } = useGetConsents({
-    pageNumber: page,
-    pageSize: PAGE_SIZE,
-  })
+  const { data, isLoading } = useGetConsents(
+    {
+      pageNumber: page,
+      pageSize: PAGE_SIZE,
+    },
+    {
+      cacheTime: oneMinCacheTime,
+    },
+  )
 
   const permissionFromCache = useMemo(() => {
     const listFromCache = useQuery.getQueriesData<ConsentsAvailableResponse[]>(
@@ -68,9 +70,9 @@ export const ConsentManagement = () => {
   }, [isLoading, isLoadingPermission, setGlobalLoad])
 
   useMemo(() => {
-    if (!!data && data?.length) {
+    if (!!data && data?.entries.length) {
       if (permissionFromCache?.length) {
-        const formattedData = data.map((val) => ({
+        const formattedData = data?.entries.map((val) => ({
           ...val,
           consents: val.consents.map((id) => {
             const permissionLabel = permissionFromCache.filter(
@@ -81,7 +83,7 @@ export const ConsentManagement = () => {
         }))
         setConsentList(formattedData)
       } else if (permissionList?.length) {
-        const formattedData = data.map((val) => ({
+        const formattedData = data?.entries.map((val) => ({
           ...val,
           consents: val.consents.map((id) => {
             const permissionLabel = permissionList.filter(
@@ -96,15 +98,17 @@ export const ConsentManagement = () => {
   }, [permissionList, permissionFromCache, data])
 
   const onPageChange = useCallback(
-    (
-      { page: pageMui, pageSize: pageSizeMui }: GridPaginationModel,
-      details: GridCallbackDetails,
-    ) => {
-      console.log(`page, pageSize`, pageMui, pageSizeMui)
-      console.log(`details`, details)
-      setPage(page)
+    (pageType: 'next' | 'before') => () => {
+      if (pageType === `next`) {
+        if (page < (data?.totalItems || 1)) {
+          alert(`ldjhdkjdh`)
+          setPage((old) => (old += 1))
+        }
+      } else if (page > 1) {
+        setPage((old) => (old -= 1))
+      }
     },
-    [page],
+    [data?.totalItems, page],
   )
 
   return (
@@ -116,14 +120,17 @@ export const ConsentManagement = () => {
           <Table
             columns={columns}
             rows={consentList}
-            initialState={{
-              pagination: {
-                paginationModel: { page: 0, pageSize: PAGE_SIZE },
-              },
-            }}
-            pageSizeOptions={[2]}
+            // initialState={{
+            //   pagination: {
+            //     paginationModel: { page: 0, pageSize: PAGE_SIZE },
+            //   },
+            // }}
+            // pageSizeOptions={[2]}
             checkboxSelection={false}
-            onPaginationModelChange={onPageChange}
+            currentPage={page}
+            totalPages={data?.totalItems || 1}
+            onNextPage={onPageChange(`next`)}
+            onPreviousPage={onPageChange(`before`)}
           />
         </Box>
       )}
