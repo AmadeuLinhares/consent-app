@@ -1,58 +1,132 @@
+import { useCallback, useMemo, useState } from 'react'
+
+import { useGetConsents } from '@api/consents/query'
+import { AddNewConsentsResponse } from '@api/consents/types'
+import { ConsentsAvailableKey } from '@api/consentsAvailable/keys'
+import { useGetConsentsAvailable } from '@api/consentsAvailable/query'
+import { ConsentsAvailableResponse } from '@api/consentsAvailable/types'
 import { Table } from '@components/Table'
 import { PageLayout } from '@layouts/PageLayout'
 import { Box } from '@mui/material'
-import { GridColDef, GridValueGetterParams } from '@mui/x-data-grid'
+import {
+  GridCallbackDetails,
+  GridColDef,
+  GridPaginationModel,
+  GridValueGetterParams,
+} from '@mui/x-data-grid'
+import { EmptyState } from '@pages/ConsentManagement/components/emptyState'
+import { useGlobalLoader } from '@storage/globalLoader'
+import { useQueryClient } from 'react-query'
+
+import { PAGE_SIZE } from './constants'
 
 const columns: GridColDef[] = [
   { field: `id`, headerName: `ID`, width: 70 },
-  { field: `firstName`, headerName: `First name`, width: 130 },
-  { field: `lastName`, headerName: `Last name`, width: 130 },
+  { field: `name`, headerName: `Name`, width: 130 },
+  { field: `email`, headerName: `E-mail`, width: 130 },
   {
-    field: `age`,
-    headerName: `Age`,
-    type: `number`,
-    width: 90,
+    field: `consents`,
+    headerName: `Consents`,
+    width: 230,
+    valueGetter: (params: GridValueGetterParams) => {
+      const { consents } = params.row
+      return consents?.length ? consents.toString() : ``
+    },
   },
-  {
-    field: `fullName`,
-    headerName: `Full name`,
-    description: `This column has a value getter and is not sortable.`,
-    sortable: false,
-    width: 160,
-    valueGetter: (params: GridValueGetterParams) =>
-      `${params.row.firstName || ``} ${params.row.lastName || ``}`,
-  },
-]
-
-const rows = [
-  { id: 1, lastName: `Snow`, firstName: `Jon`, age: 35 },
-  { id: 2, lastName: `Lannister`, firstName: `Cersei`, age: 42 },
-  { id: 3, lastName: `Lannister`, firstName: `Jaime`, age: 45 },
-  { id: 4, lastName: `Stark`, firstName: `Arya`, age: 16 },
-  { id: 5, lastName: `Targaryen`, firstName: `Daenerys`, age: null },
-  { id: 6, lastName: `Melisandre`, firstName: null, age: 150 },
-  { id: 7, lastName: `Clifford`, firstName: `Ferrara`, age: 44 },
-  { id: 8, lastName: `Frances`, firstName: `Rossini`, age: 36 },
-  { id: 9, lastName: `Roxie`, firstName: `Harvey`, age: 65 },
 ]
 
 export const ConsentManagement = () => {
-  console.log(import.meta.env.VITE_BASE_URL)
+  const [page, setPage] = useState(0)
+  const setGlobalLoad = useGlobalLoader((state) => state.setLoading)
+  const useQuery = useQueryClient()
+  const [consentList, setConsentList] = useState<AddNewConsentsResponse[]>([])
+  const { data, isLoading } = useGetConsents({
+    pageNumber: page,
+    pageSize: PAGE_SIZE,
+  })
+
+  const permissionFromCache = useMemo(() => {
+    const listFromCache = useQuery.getQueriesData<ConsentsAvailableResponse[]>(
+      ConsentsAvailableKey(),
+    )
+
+    if (listFromCache?.length && listFromCache[0]?.length > 1) {
+      return listFromCache[0][1]
+    }
+    return []
+  }, [useQuery])
+
+  const { data: permissionList, isLoading: isLoadingPermission } =
+    useGetConsentsAvailable({
+      enabled: !permissionFromCache?.length,
+    })
+
+  const fetchInfos = useMemo(() => {
+    const isFetch = isLoading || isLoadingPermission
+    setGlobalLoad(isFetch)
+    return isFetch
+  }, [isLoading, isLoadingPermission, setGlobalLoad])
+
+  useMemo(() => {
+    if (!!data && data?.length) {
+      if (permissionFromCache?.length) {
+        const formattedData = data.map((val) => ({
+          ...val,
+          consents: val.consents.map((id) => {
+            const permissionLabel = permissionFromCache.filter(
+              (permission) => permission.id === id,
+            )
+            return permissionLabel[0].label
+          }),
+        }))
+        setConsentList(formattedData)
+      } else if (permissionList?.length) {
+        const formattedData = data.map((val) => ({
+          ...val,
+          consents: val.consents.map((id) => {
+            const permissionLabel = permissionList.filter(
+              (permission) => permission.id === id,
+            )
+            return permissionLabel[0].label
+          }),
+        }))
+        setConsentList(formattedData)
+      }
+    }
+  }, [permissionList, permissionFromCache, data])
+
+  const onPageChange = useCallback(
+    (
+      { page: pageMui, pageSize: pageSizeMui }: GridPaginationModel,
+      details: GridCallbackDetails,
+    ) => {
+      console.log(`page, pageSize`, pageMui, pageSizeMui)
+      console.log(`details`, details)
+      setPage(page)
+    },
+    [page],
+  )
+
   return (
     <PageLayout>
-      <Box>
-        <Table
-          columns={columns}
-          rows={rows}
-          initialState={{
-            pagination: {
-              paginationModel: { page: 0, pageSize: 2 },
-            },
-          }}
-          pageSizeOptions={[2]}
-          checkboxSelection={false}
-        />
-      </Box>
+      {!fetchInfos && consentList.length === 0 ? (
+        <EmptyState />
+      ) : (
+        <Box>
+          <Table
+            columns={columns}
+            rows={consentList}
+            initialState={{
+              pagination: {
+                paginationModel: { page: 0, pageSize: PAGE_SIZE },
+              },
+            }}
+            pageSizeOptions={[2]}
+            checkboxSelection={false}
+            onPaginationModelChange={onPageChange}
+          />
+        </Box>
+      )}
     </PageLayout>
   )
 }

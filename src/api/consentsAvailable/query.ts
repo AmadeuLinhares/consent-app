@@ -1,10 +1,10 @@
 import { ConsentsAvailableKey } from '@api/consentsAvailable/keys'
 import { ConsentsAvailableResponse } from '@api/consentsAvailable/types'
 import { api } from '@axios/index'
-import { QueryOptions, useQuery } from 'react-query'
+import { UseQueryOptions, useQuery } from 'react-query'
 
-export const useGtConsentsAvailable = (
-  options?: QueryOptions<ConsentsAvailableResponse[]>,
+export const useGetConsentsAvailable = (
+  options?: UseQueryOptions<ConsentsAvailableResponse[]>,
 ) => {
   return useQuery<ConsentsAvailableResponse[]>({
     queryKey: ConsentsAvailableKey(),

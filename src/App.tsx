@@ -1,3 +1,4 @@
+import { Loading } from '@components/Loading'
 import { GlobalStyles, ThemeProvider } from '@mui/material'
 import { Router } from '@router/index'
 import { globalStyles } from '@theme/globalStyles'
@@ -21,6 +22,7 @@ const App = () => {
     <QueryClientProvider client={queryClient}>
       <ThemeProvider theme={theme}>
         <BrowserRouter>
+          <Loading />
           <GlobalStyles styles={globalStyles.styles} />
           <Router />
         </BrowserRouter>

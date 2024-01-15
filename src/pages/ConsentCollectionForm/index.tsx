@@ -1,13 +1,14 @@
 import { useMemo } from 'react'
 
 import { useAddNewConsents } from '@api/consents/mutations'
-import { useGtConsentsAvailable } from '@api/consentsAvailable/query'
+import { useGetConsentsAvailable } from '@api/consentsAvailable/query'
 import { Checkbox } from '@components/CheckBox'
 import { Input } from '@components/Input'
 import { Typography } from '@components/Typography'
+import { RouteNames } from '@configs/routes'
 import { zodResolver } from '@hookform/resolvers/zod'
 import { PageLayout } from '@layouts/PageLayout'
-import { Box, Button } from '@mui/material'
+import { Box, Button, CircularProgress } from '@mui/material'
 import { SkeletonHome } from '@pages/ConsentCollectionForm/components/Skeleton'
 import {
   Form,
@@ -15,23 +16,29 @@ import {
 } from '@pages/ConsentCollectionForm/types'
 import tokens from '@theme/tokens'
 import { useForm } from 'react-hook-form'
+import { useNavigate } from 'react-router-dom'
 
 export const ConsentCollectionForm = () => {
-  const { data, isLoading } = useGtConsentsAvailable()
-  const { mutate } = useAddNewConsents({
+  const {
+    register,
+    handleSubmit,
+    reset,
+    clearErrors,
+    formState: { errors },
+  } = useForm<Form>({
+    resolver: zodResolver(cosentCollectionFormSchema),
+  })
+  const navigate = useNavigate()
+  const { data, isLoading } = useGetConsentsAvailable()
+  const { mutate, isLoading: isLoadingMutation } = useAddNewConsents({
     onSuccess: () => {
-      alert(`success`)
+      reset()
+      clearErrors()
+      navigate(RouteNames.collected_consents)
     },
     onError: () => {
       alert(`error`)
     },
-  })
-  const {
-    register,
-    handleSubmit,
-    formState: { errors },
-  } = useForm<Form>({
-    resolver: zodResolver(cosentCollectionFormSchema),
   })
   const submit = (dataForm: Form) => {
     const consentsAllowed = data?.filter((val) => !!dataForm[val.value])
@@ -117,8 +124,16 @@ export const ConsentCollectionForm = () => {
 
           <Box display={`flex`} justifyContent={`center`} alignItems={`center`}>
             <Box width={`40%`}>
-              <Button type="submit" variant="contained">
-                send
+              <Button
+                type="submit"
+                variant="contained"
+                disabled={isLoadingMutation}
+              >
+                {isLoadingMutation ? (
+                  <CircularProgress size={`15px`} color={`inherit`} />
+                ) : (
+                  `Give consent`
+                )}
               </Button>
             </Box>
           </Box>

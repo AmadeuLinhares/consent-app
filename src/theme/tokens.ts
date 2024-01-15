@@ -31,6 +31,7 @@ export default {
     XL: `24px`,
     XXL: `28px`,
     XXXL: `32px`,
+    XXXXL: `48px`,
   },
   SPACINGS: {
     spacing0: `0px`,

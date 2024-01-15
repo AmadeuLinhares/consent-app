@@ -1,38 +1,21 @@
 {
   "consents": [
     {
-      "id": 1,
-      "name": "name",
-      "email": "email",
-      "consents": []
+      "email": "amadeulinharesp@gmail.com",
+      "name": "amadeu jihskjlsjk",
+      "consents": [
+        "1fd4a9b6-450d-44b5-a3eb-f9948bb7db54"
+      ],
+      "id": 1
     },
     {
       "email": "amadeulinharesp@gmail.com",
-      "name": "amadeu linhares",
+      "name": "jhssjhs gsjhsg sjhgs ",
       "consents": [
-        "1fd4a9b6-450d-44b5-a3eb-f9948bb7db54"
+        "86c3efaf-4294-481a-aba5-6ef5b241ed7f",
+        "b96cf880-bf31-4549-b5bb-dd28ad36bffd"
       ],
       "id": 2
-    },
-    {
-      "email": "amadeulinharesp@gmail.com",
-      "name": "amadeu jihskjlsjk",
-      "consents": [
-        "86c3efaf-4294-481a-aba5-6ef5b241ed7f",
-        "b96cf880-bf31-4549-b5bb-dd28ad36bffd",
-        "1fd4a9b6-450d-44b5-a3eb-f9948bb7db54"
-      ],
-      "id": 3
-    },
-    {
-      "email": "amadeulinharesp@gmail.com",
-      "name": "amadeu jihskjlsjk",
-      "consents": [
-        "86c3efaf-4294-481a-aba5-6ef5b241ed7f",
-        "b96cf880-bf31-4549-b5bb-dd28ad36bffd",
-        "1fd4a9b6-450d-44b5-a3eb-f9948bb7db54"
-      ],
-      "id": 4
     }
   ],
   "consentsAvailable": [
