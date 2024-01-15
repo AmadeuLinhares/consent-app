@@ -27,6 +27,7 @@ export const SideBar = () => {
       bgcolor={tokens.colors.grey.GRAY_500}
       height={`100%`}
       borderRadius={`18px`}
+      data-testid="sideBar-component-id"
     >
       <Box>
         <List>
@@ -35,6 +36,7 @@ export const SideBar = () => {
               key={item.key}
               disablePadding
               onClick={onNavigate(item.route)}
+              id={item.key}
             >
               <ListItemButton>
                 <ListItemIcon>

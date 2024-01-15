@@ -30,7 +30,7 @@ const TextField = styled(TextFieldMui)<TextFieldProps>(({ theme }) => ({
 export const Input = forwardRef<HTMLDivElement, TextFieldProps>(
   ({ helperText, ...rest }, ref) => {
     return (
-      <Box>
+      <Box data-testid="input-component-container">
         <Box>
           <TextField variant="outlined" ref={ref} {...rest} />
         </Box>

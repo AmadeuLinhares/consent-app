@@ -7,11 +7,13 @@ import { QueryClient, QueryClientProvider } from 'react-query'
 import { BrowserRouter } from 'react-router-dom'
 
 const App = () => {
+  const oneMinCacheTime = 1000 * 60 // 1min
+
   const queryClient = new QueryClient({
     defaultOptions: {
       queries: {
-        cacheTime: 1000,
-        staleTime: 1000,
+        cacheTime: oneMinCacheTime,
+        staleTime: oneMinCacheTime,
         retryOnMount: true,
         retry: false,
       },

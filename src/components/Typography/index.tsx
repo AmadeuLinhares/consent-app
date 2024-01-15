@@ -47,6 +47,7 @@ const Text = styled(`p`)<TypographyProps>`
 export const Typography = ({
   children,
   variant = `primary`,
+  dataTestid
 }: TypographyProps) => {
-  return <Text variant={variant}>{children}</Text>
+  return <Text data-testid={dataTestid} variant={variant}>{children}</Text>
 }

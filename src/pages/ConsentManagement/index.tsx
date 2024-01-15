@@ -17,12 +17,12 @@ import { PAGE_SIZE } from './constants'
 
 const columns: GridColDef[] = [
   { field: `id`, headerName: `ID`, width: 70 },
-  { field: `name`, headerName: `Name`, width: 130 },
-  { field: `email`, headerName: `E-mail`, width: 130 },
+  { field: `name`, headerName: `Name`, width: 230 },
+  { field: `email`, headerName: `E-mail`, width: 230 },
   {
     field: `consents`,
     headerName: `Consents`,
-    width: 230,
+    width: 430,
     valueGetter: (params: GridValueGetterParams) => {
       const { consents } = params.row
       return consents?.length ? consents.toString() : ``
@@ -30,22 +30,15 @@ const columns: GridColDef[] = [
   },
 ]
 
-const oneMinCacheTime = 1000 * 60 // 1min
-
 export const ConsentManagement = () => {
   const [page, setPage] = useState(1)
   const setGlobalLoad = useGlobalLoader((state) => state.setLoading)
   const useQuery = useQueryClient()
   const [consentList, setConsentList] = useState<AddNewConsentsResponse[]>([])
-  const { data, isLoading } = useGetConsents(
-    {
-      pageNumber: page,
-      pageSize: PAGE_SIZE,
-    },
-    {
-      cacheTime: oneMinCacheTime,
-    },
-  )
+  const { data, isLoading } = useGetConsents({
+    pageNumber: page,
+    pageSize: PAGE_SIZE,
+  })
 
   const permissionFromCache = useMemo(() => {
     const listFromCache = useQuery.getQueriesData<ConsentsAvailableResponse[]>(
@@ -101,7 +94,6 @@ export const ConsentManagement = () => {
     (pageType: 'next' | 'before') => () => {
       if (pageType === `next`) {
         if (page < (data?.totalItems || 1)) {
-          alert(`ldjhdkjdh`)
           setPage((old) => (old += 1))
         }
       } else if (page > 1) {
@@ -120,12 +112,6 @@ export const ConsentManagement = () => {
           <Table
             columns={columns}
             rows={consentList}
-            // initialState={{
-            //   pagination: {
-            //     paginationModel: { page: 0, pageSize: PAGE_SIZE },
-            //   },
-            // }}
-            // pageSizeOptions={[2]}
             checkboxSelection={false}
             currentPage={page}
             totalPages={data?.totalItems || 1}

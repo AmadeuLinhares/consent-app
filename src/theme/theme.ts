@@ -30,5 +30,21 @@ export const theme = () => {
         },
       },
     },
+    palette: {
+      primary: {
+        main: tokens.colors.grey.GRAY_100,
+        '200': tokens.colors.grey.GRAY_200,
+        '300': tokens.colors.grey.GRAY_300,
+        '400': tokens.colors.grey.GRAY_400,
+        '500': tokens.colors.grey.GRAY_500,
+        '600': tokens.colors.grey.GRAY_600,
+      },
+      error: {
+        main: tokens.colors.red.RED_DARK,
+      },
+      success: {
+        main: tokens.colors.green.GREEN_500,
+      },
+    },
   })
 }

@@ -20,9 +20,10 @@ export const Loading = () => {
           alignItems={`center`}
           bgcolor={tokens.colors.grey.GRAY_400}
           zIndex={9}
+          data-testid="global-loader-component"
         >
           <Box>
-            <Typography>Loading....</Typography>
+            <Typography dataTestid='global-loader-label'>Loading....</Typography>
           </Box>
         </Box>
       )

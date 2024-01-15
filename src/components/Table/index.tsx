@@ -14,7 +14,7 @@ export const Table = (props: TableProps) => {
         hideFooterPagination={true}
         hideFooter={true}
         sx={{
-          color: tokens.colors.grey.GRAY_100,
+          color: tokens.colors.grey.GRAY_200,
         }}
       />
       <Box
@@ -24,7 +24,7 @@ export const Table = (props: TableProps) => {
         padding={tokens.SPACINGS.spacing12}
       >
         <Box>
-          <Typography>
+          <Typography variant="tertiary">
             {props.currentPage} - {props.totalPages} of {props.totalPages}
           </Typography>
         </Box>
@@ -40,7 +40,7 @@ export const Table = (props: TableProps) => {
             alignItems={`center`}
             onClick={props.onPreviousPage}
           >
-            <ArrowCircleLeftIcon color="error" />
+            <ArrowCircleLeftIcon color="primary" fontSize="small" />
           </Box>
           <Box
             marginLeft={tokens.SPACINGS.spacing12}
@@ -49,7 +49,7 @@ export const Table = (props: TableProps) => {
             alignItems={`center`}
             onClick={props.onNextPage}
           >
-            <ArrowCircleRightIcon />
+            <ArrowCircleRightIcon color="primary" fontSize="small" />
           </Box>
         </Box>
       </Box>
