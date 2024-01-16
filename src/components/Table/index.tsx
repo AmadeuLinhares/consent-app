@@ -16,6 +16,7 @@ export const Table = (props: TableProps) => {
         sx={{
           color: tokens.colors.grey.GRAY_200,
         }}
+        data-testid="dataGrid-component-id"
       />
       <Box
         display={`flex`}
@@ -24,7 +25,10 @@ export const Table = (props: TableProps) => {
         padding={tokens.SPACINGS.spacing12}
       >
         <Box>
-          <Typography variant="tertiary">
+          <Typography
+            variant="tertiary"
+            dataTestid="dataGrid-component-pagination-description"
+          >
             {props.currentPage} - {props.totalPages} of {props.totalPages}
           </Typography>
         </Box>
@@ -39,6 +43,7 @@ export const Table = (props: TableProps) => {
             justifyContent={`center`}
             alignItems={`center`}
             onClick={props.onPreviousPage}
+            data-testid="dataGrid-component-previousPage-id"
           >
             <ArrowCircleLeftIcon color="primary" fontSize="small" />
           </Box>
@@ -48,6 +53,7 @@ export const Table = (props: TableProps) => {
             justifyContent={`center`}
             alignItems={`center`}
             onClick={props.onNextPage}
+            data-testid="dataGrid-component-nextPage-id"
           >
             <ArrowCircleRightIcon color="primary" fontSize="small" />
           </Box>

@@ -36,7 +36,7 @@ export const SideBar = () => {
               key={item.key}
               disablePadding
               onClick={onNavigate(item.route)}
-              id={item.key}
+              data-testid={item.key}
             >
               <ListItemButton>
                 <ListItemIcon>

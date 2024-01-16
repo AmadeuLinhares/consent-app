@@ -11,7 +11,7 @@ export const Checkbox = forwardRef<HTMLButtonElement, CheckboxProps>(
   (props, ref) => {
     const { label, helperText, ...rest } = props
     return (
-      <Box display={`grid`}>
+      <Box display={`grid`} data-testid="checkbox-component-testid">
         <Box display={`flex`}>
           <Box display={`flex`}>
             <CheckboxMui {...rest} ref={ref} />
@@ -22,11 +22,13 @@ export const Checkbox = forwardRef<HTMLButtonElement, CheckboxProps>(
             alignItems={`center`}
             marginLeft={tokens.SPACINGS.spacing4}
           >
-            <Typography>{label}</Typography>
+            <Typography dataTestid="label-checkbox-testid">{label}</Typography>
           </Box>
         </Box>
         <Box paddingLeft={tokens.SPACINGS.spacing16}>
-          <Typography variant="error">{helperText}</Typography>
+          <Typography dataTestid="error-label-checkbox-testid" variant="error">
+            {helperText}
+          </Typography>
         </Box>
       </Box>
     )

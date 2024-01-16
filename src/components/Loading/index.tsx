@@ -23,7 +23,9 @@ export const Loading = () => {
           data-testid="global-loader-component"
         >
           <Box>
-            <Typography dataTestid='global-loader-label'>Loading....</Typography>
+            <Typography dataTestid="global-loader-label">
+              Loading....
+            </Typography>
           </Box>
         </Box>
       )
