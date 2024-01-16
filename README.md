@@ -4,6 +4,13 @@ This is a front end project using reactJs + vite + typescript
 The goal of this project its simulate a system to collect user permissions.
 
 
+## Requirements
+
+ - NPM
+ - NodeJs 20
+ - ReactJs 18
+ - Vite 5
+
 ## Configs
 
 To run this project, you **must** use **npm** as dependency manager. The reason is, i'm using my own eslint lib that i publish just in npm repository (I promise i will publish i the others tools like yarn 😬😬). 
