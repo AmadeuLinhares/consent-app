@@ -10,7 +10,6 @@ const styledChoiced = ({ variant }: Pick<TypographyProps, 'variant'>) => {
         color: ${tokens.colors.grey.GRAY_300};
         font-size: ${tokens.FONT_SIZE.LG};    
     `
-      break
     case `secondary`: // Checkbox Items
       return `
         color: ${tokens.colors.grey.GRAY_400};
